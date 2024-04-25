@@ -1,0 +1,21 @@
+{
+  "name": "auth",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node-dev src/index.ts",
+    "prettier": "prettier --check '**/**/*.{js,jsx,ts,tsx,css}'",
+    "prettier:fix": "prettier --write '**/**/*.{js,jsx,ts,tsx,css}'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^4.17.21",
+    "express": "^4.19.2",
+    "express-validator": "^7.0.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.4.5"
+  }
+}
