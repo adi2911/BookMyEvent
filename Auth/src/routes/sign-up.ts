@@ -51,8 +51,7 @@ router.post(
       ...req.session,
       jwt: userJWT,
     };
-
-    res.status(201).send(`Use created: ${user}`);
+    res.status(201).send(user);
   }
 );
 
