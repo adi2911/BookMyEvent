@@ -8,7 +8,7 @@ export type UserAttributes = {
 };
 
 //interface to descibe User document
-interface UserDoc extends mongoose.Document {
+export interface UserDoc extends mongoose.Document {
   email: string;
   password: string;
 }
