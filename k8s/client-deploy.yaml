@@ -1,0 +1,30 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: client-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: next-client
+  template:
+    metadata:
+      labels:
+        app: next-client
+    spec:
+      containers:
+        - name: next-cliebt
+          image: adi2911/next-client
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: next-client-service
+spec:
+  selector:
+    app: next-client
+  ports:
+    - name: next-client
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
