@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
-import { generateJWT, validateRequest } from "../helpers/helper";
+import { createToken, validateRequest } from "../helpers/helper";
 import { User } from "../models/user";
 import { BadRequestError } from "../errors/bad-request-errors";
 import { Hashing } from "../helpers/hashing";
@@ -35,7 +35,9 @@ router.post(
     }
 
     //generating jwt
-    req = generateJWT(req, existingUser);
+    req.session = {
+      jwt: createToken(existingUser.id, existingUser.email),
+    };
     res
       .status(201)
       .send({ message: "Logged In successfully", user: existingUser });

@@ -31,7 +31,7 @@ export const validateRequest = (
   next();
 };
 
-const createToken = (id: string, email: string) => {
+export const createToken = (id: string, email: string) => {
   return jwt.sign(
     {
       id,
@@ -39,17 +39,6 @@ const createToken = (id: string, email: string) => {
     },
     process.env.JWT_KEY! //secret key
   );
-};
-
-export const generateJWT = (req: Request, user: UserDoc) => {
-  const userJWT = createToken(user.id, user.email);
-
-  //store it on the session object
-  req.session = {
-    ...req.session,
-    jwt: userJWT,
-  };
-  return req;
 };
 
 //adding a currentUser property to Request type and req object

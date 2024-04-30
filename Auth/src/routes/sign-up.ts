@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import { User } from "../models/user";
 import { BadRequestError } from "../errors/bad-request-errors";
-import { generateJWT, validateRequest } from "../helpers/helper";
+import { createToken, validateRequest } from "../helpers/helper";
 const router = express.Router();
 
 router.post(
@@ -29,7 +29,9 @@ router.post(
     await user.save();
 
     //generating jwt
-    req = generateJWT(req, user);
+    req.session = {
+      jwt: createToken(user.id, user.email),
+    };
 
     res.status(201).send(user);
   }
