@@ -1,23 +1,23 @@
-import request from "supertest";
-import { app } from "../../app";
+import request from 'supertest';
+import { app } from '../../app';
 
-it("responds with details about the current user", async () => {
-  const cookie = await signin();
+it('responds with details about the current user', async () => {
+  const cookie = await global.signin();
 
   const response = await request(app)
-    .get("/api/users/currentuser")
-    .set("Cookie", cookie!)
+    .get('/api/users/currentuser')
+    .set('Cookie', cookie)
     .send()
     .expect(200);
 
-  expect(response.body.currentUser.email).toEqual("tst@t.com");
+  expect(response.body.currentUser.email).toEqual('test@test.com');
 });
 
-it("responds with null if noy authenticated", async () => {
-  const res = await request(app)
-    .get("/api/users/currentuser")
+it('responds with null if not authenticated', async () => {
+  const response = await request(app)
+    .get('/api/users/currentuser')
     .send()
     .expect(200);
 
-  expect(res.body.currentUser).toBeNull();
+  expect(response.body.currentUser).toEqual(null);
 });

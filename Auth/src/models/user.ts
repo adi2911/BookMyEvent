@@ -1,61 +1,61 @@
-import mongoose from "mongoose";
-import { Hashing } from "../helpers/hashing";
+import mongoose from 'mongoose';
+import { Password } from '../services/password';
 
-//type for User model's build method
-export type UserAttributes = {
-  email: string;
-  password: string;
-};
-
-//interface to descibe User document
-export interface UserDoc extends mongoose.Document {
+// An interface that describes the properties
+// that are requried to create a new User
+interface UserAttrs {
   email: string;
   password: string;
 }
 
-//interface to describe User model
-export interface UserModel extends mongoose.Model<UserDoc> {
-  build(userAttributes: UserAttributes): UserDoc;
+// An interface that describes the properties
+// that a User Model has
+interface UserModel extends mongoose.Model<UserDoc> {
+  build(attrs: UserAttrs): UserDoc;
+}
+
+// An interface that describes the properties
+// that a User Document has
+interface UserDoc extends mongoose.Document {
+  email: string;
+  password: string;
 }
 
 const userSchema = new mongoose.Schema(
   {
     email: {
       type: String,
-      required: true,
+      required: true
     },
     password: {
       type: String,
-      required: true,
-    },
+      required: true
+    }
   },
   {
     toJSON: {
-      transform(_doc, ret) {
+      transform(doc, ret) {
         ret.id = ret._id;
         delete ret._id;
         delete ret.password;
-      },
-      versionKey: false,
-    },
+        delete ret.__v;
+      }
+    }
   }
 );
 
-userSchema.pre("save", async function (done) {
-  if (this.isModified("password")) {
-    const hashedPass = await Hashing.toHash(this.get("password"));
-    this.set("password", hashedPass);
+userSchema.pre('save', async function(done) {
+  if (this.isModified('password')) {
+    const hashed = await Password.toHash(this.get('password'));
+    this.set('password', hashed);
   }
   done();
 });
 
-// adding a build function as static property that can be access directly using User model
-userSchema.statics.build = (
-  userAttributes: UserAttributes
-): mongoose.Document => {
-  return new User(userAttributes);
+userSchema.statics.build = (attrs: UserAttrs) => {
+  return new User(attrs);
 };
 
-const User = mongoose.model<UserDoc, UserModel>("User", userSchema);
+const User = mongoose.model<UserDoc, UserModel>('User', userSchema);
 
 export { User };

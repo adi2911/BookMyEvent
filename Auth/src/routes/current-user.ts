@@ -1,5 +1,5 @@
 import express from "express";
-import { currentUser } from "../helpers/helper";
+import { currentUser } from "@adbookmyevent/common";
 
 const router = express.Router();
 
