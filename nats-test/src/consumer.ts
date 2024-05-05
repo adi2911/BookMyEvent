@@ -1,5 +1,6 @@
-import nats, { Message } from "node-nats-streaming";
+import nats from "node-nats-streaming";
 import { randomBytes } from "crypto";
+import TicketCreatedConsumer from "./events/ticket-created-consumer";
 
 console.clear();
 
@@ -14,24 +15,8 @@ client.on("connect", () => {
     console.log("Consumer connection closed");
     process.exit();
   });
-  /*removing default behaviour to receibe event as soon as its listened, we will manually send acknowledgement
-     after complete processing of that data*/
-  const options = client.subscriptionOptions().setManualAckMode(true);
-  const subscription = client.subscribe(
-    "ticket:created",
-    "order-service-queue-group",
-    options
-  );
 
-  subscription.on("message", (msg: Message) => {
-    const data = msg.getData();
-    if (typeof data == "string") {
-      console.log(
-        `Received event number : ${msg.getSequence()},from channel : ${msg.getSubject()}\n with data : ${data}`
-      );
-    }
-    msg.ack();
-  });
+  new TicketCreatedConsumer(client).listen();
 });
 
 process.on("SIGINT", () => client.close());
