@@ -1,11 +1,15 @@
-import { Subjects } from "../../../common/src/events/subjects";
+import { Message } from "node-nats-streaming";
+import { Consumer, Subjects, TicketUpdatedEvent } from "@adbookmyevent/common";
 
-export interface TicketUpdatedEvent {
-  subject: Subjects.TicketUpdated;
-  data: {
-    id: string;
-    title: string;
-    price: number;
-    userId: string;
-  };
+class TicketUpdatedConsumer extends Consumer<TicketUpdatedEvent> {
+  readonly subject: Subjects.TicketUpdated = Subjects.TicketUpdated;
+  queueGroupName = "payments-service";
+
+  onMessage(data: TicketUpdatedEvent["data"], msg: Message): void {
+    console.log("Listening onMessage", data);
+
+    msg.ack();
+  }
 }
+
+export default TicketUpdatedConsumer;

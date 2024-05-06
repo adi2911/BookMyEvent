@@ -1,6 +1,7 @@
 import nats from "node-nats-streaming";
 import { randomBytes } from "crypto";
 import TicketCreatedConsumer from "./events/ticket-created-consumer";
+import TicketUpdatedConsumer from "./events/ticket-updated-consumer";
 
 console.clear();
 
@@ -17,6 +18,7 @@ client.on("connect", () => {
   });
 
   new TicketCreatedConsumer(client).listen();
+  new TicketUpdatedConsumer(client).listen();
 });
 
 process.on("SIGINT", () => client.close());

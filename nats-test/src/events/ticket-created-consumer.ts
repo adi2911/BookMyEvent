@@ -1,15 +1,5 @@
 import { Message } from "node-nats-streaming";
-import { Consumer, Subjects } from "@adbookmyevent/common";
-
-export interface TicketCreatedEvent {
-  subject: Subjects.TicketCreated;
-  data: {
-    id: string;
-    title: string;
-    price: number;
-    userId: string;
-  };
-}
+import { Consumer, Subjects, TicketCreatedEvent } from "@adbookmyevent/common";
 
 class TicketCreatedConsumer extends Consumer<TicketCreatedEvent> {
   readonly subject: Subjects.TicketCreated = Subjects.TicketCreated;
