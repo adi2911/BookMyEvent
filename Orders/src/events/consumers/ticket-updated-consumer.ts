@@ -13,13 +13,17 @@ export class TicketUpdatedConsumer extends Consumer<TicketUpdatedEvent> {
   queueGroupName = queueGroupName;
 
   async onMessage(data: TicketUpdatedEvent["data"], msg: Message) {
-    const ticket = await Ticket.findById(data.id);
+    const ticket = await Ticket.findByEvent({
+      id: data.id,
+      version: data.version,
+    });
     if (!ticket) {
       throw new BadRequestError("Ticket not found");
     }
     ticket.set({
       title: data.title,
       price: data.price,
+      //   version: data.version,
     });
 
     await ticket.save();

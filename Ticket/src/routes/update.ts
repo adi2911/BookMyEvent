@@ -41,6 +41,7 @@ router.put(
       ...ticket,
       id: ticket.id,
       userId: ticket.userId,
+      version: ticket.version,
     });
 
     res.send(ticket);
