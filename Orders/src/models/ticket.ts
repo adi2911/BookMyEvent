@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import Order from "./order";
 
 export interface TicketAttribute {
+  id: string;
   title: string;
   price: number;
 }
@@ -40,7 +41,11 @@ const tikcetSchema = new mongoose.Schema(
 );
 
 tikcetSchema.statics.build = (attr: TicketAttribute) => {
-  return new Ticket(attr);
+  return new Ticket({
+    _id: attr.id,
+    title: attr.title,
+    price: attr.price,
+  });
 };
 
 tikcetSchema.methods.isReserved = async function () {

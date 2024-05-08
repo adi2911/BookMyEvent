@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import { natsWrapper } from "./nats-wrapper";
 
 import { app } from "./app";
+import { TicketCreatedConsumer } from "./events/consumers/ticket-created-consumer";
+import { TicketUpdatedConsumer } from "./events/consumers/ticket-updated-consumer";
 
 const start = async () => {
   if (!process.env.JWT_KEY) {
@@ -21,6 +23,7 @@ const start = async () => {
   }
 
   try {
+    //Initializing nats wrapper
     await natsWrapper.connect(
       process.env.NATS_CLUSTER_ID!,
       process.env.NATS_CLIENT_ID!,
@@ -34,6 +37,12 @@ const start = async () => {
     process.on("SIGINT", () => natsWrapper.client.close());
     process.on("SIGTERM", () => natsWrapper.client.close());
 
+    //Listening to events :
+
+    new TicketCreatedConsumer(natsWrapper.client).listen();
+    new TicketUpdatedConsumer(natsWrapper.client).listen();
+
+    //connecting to mongoDB
     await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected to MongoDb");
   } catch (err) {
