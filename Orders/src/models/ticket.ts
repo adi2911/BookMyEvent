@@ -56,7 +56,6 @@ tikcetSchema.statics.build = (attr: TicketAttribute) => {
     _id: attr.id,
     title: attr.title,
     price: attr.price,
-    // version: attr.version,
   });
 };
 

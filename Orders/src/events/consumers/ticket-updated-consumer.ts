@@ -23,7 +23,6 @@ export class TicketUpdatedConsumer extends Consumer<TicketUpdatedEvent> {
     ticket.set({
       title: data.title,
       price: data.price,
-      //   version: data.version,
     });
 
     await ticket.save();
