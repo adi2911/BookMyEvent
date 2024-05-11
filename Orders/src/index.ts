@@ -4,6 +4,7 @@ import { natsWrapper } from "./nats-wrapper";
 import { app } from "./app";
 import { TicketCreatedConsumer } from "./events/consumers/ticket-created-consumer";
 import { TicketUpdatedConsumer } from "./events/consumers/ticket-updated-consumer";
+import { ExpirationCompleteConsumer } from "./events/consumers/expiration-complete-consumer";
 
 const start = async () => {
   if (!process.env.JWT_KEY) {
@@ -41,6 +42,8 @@ const start = async () => {
 
     new TicketCreatedConsumer(natsWrapper.client).listen();
     new TicketUpdatedConsumer(natsWrapper.client).listen();
+
+    new ExpirationCompleteConsumer(natsWrapper.client).listen();
 
     //connecting to mongoDB
     await mongoose.connect(process.env.MONGO_URI);
