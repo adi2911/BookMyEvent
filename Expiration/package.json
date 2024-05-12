@@ -18,7 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@adbookmyevent/common": "^1.0.9",
+    "@adbookmyevent/common": "^1.0.10",
     "@types/bull": "^4.10.0",
     "bull": "^4.12.3",
     "node-nats-streaming": "^0.3.2",
