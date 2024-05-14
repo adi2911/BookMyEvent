@@ -4,12 +4,12 @@ import { useState } from "react";
 export default ({ url, method, body, onSuccess }) => {
   const [errors, setErrors] = useState(null);
   //since ingress -> cluster-ip -> auth is running , we need to call api accordingly
-  const doRequest = async () => {
+  const doRequest = async (props = {}) => {
     console.log("I was called");
 
     try {
       setErrors(null);
-      const response = await axios[method](url, body);
+      const response = await axios[method](url, { ...body, ...props });
       console.log("iiii", response);
       if (onSuccess) {
         onSuccess(response.data);
