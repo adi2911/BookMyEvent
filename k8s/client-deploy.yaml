@@ -13,7 +13,7 @@ spec:
         app: next-client
     spec:
       containers:
-        - name: next-cliebt
+        - name: next-client
           image: adi2911/next-client
 ---
 apiVersion: v1

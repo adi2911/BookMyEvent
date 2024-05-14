@@ -19,6 +19,11 @@ export class ExpirationCompleteConsumer extends Consumer<ExpirationCompleteEvent
     if (!order) {
       throw new BadRequestError("No order found");
     }
+
+    if (order.status === OrderStatus.COMPLETE) {
+      msg.ack();
+      return;
+    }
     order.set({
       status: OrderStatus.CANCELLED,
     });
@@ -29,8 +34,8 @@ export class ExpirationCompleteConsumer extends Consumer<ExpirationCompleteEvent
       id: order.id,
       version: order.version,
       ticket: {
-        ...order.ticket,
         id: order.ticket.id,
+        price: order.ticket.price,
       },
     });
   }

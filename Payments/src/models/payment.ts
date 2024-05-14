@@ -41,9 +41,7 @@ paymentSchema.set("versionKey", "version"); //By default its __v
 paymentSchema.plugin(updateIfCurrentPlugin);
 
 paymentSchema.statics.build = (attr: PaymentAttribute) => {
-  return new Payment({
-    ...attr,
-  });
+  return new Payment(attr);
 };
 
 const Payment = mongoose.model<PaymentDoc, PaymentModel>(

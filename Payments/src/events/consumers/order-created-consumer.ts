@@ -15,8 +15,11 @@ export class OrderCreaterConsumer extends Consumer<OrderCreatedEvent> {
 
   async onMessage(data: OrderCreatedEvent["data"], msg: Message) {
     const order = Order.build({
-      ...data,
       price: data.ticket.price,
+      id: data.id,
+      status: data.status,
+      version: data.version,
+      userId: data.userId,
     });
     await order.save();
     msg.ack();

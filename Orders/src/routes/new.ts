@@ -30,6 +30,7 @@ router.post(
     const { ticketId } = req.body;
     //Find ticket in database that user is trying to purchase
     const ticket = await Ticket.findById(ticketId);
+    console.log(">>>>>> ticket", ticket, ticketId);
     if (!ticket) {
       throw new NotFoundError();
     }
@@ -56,13 +57,14 @@ router.post(
 
     // Publish order created event
     new OrderCreatedPublisher(natsWrapper.client).publish({
-      ...order,
       id: order.id,
+      status: order.status,
+      userId: order.userId,
       expiresAt: order.expiresAt.toISOString(),
       version: order.version,
       ticket: {
         id: ticket.id,
-        price: ticket.price.toString(),
+        price: ticket.price,
       },
     });
 

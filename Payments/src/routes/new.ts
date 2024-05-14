@@ -50,8 +50,9 @@ router.post(
     //publishing payment created
 
     await new PaymentCreatedPublisher(natsWrapper.client).publish({
-      ...payment,
       id: payment.id,
+      orderId: payment.orderId,
+      stripeId: payment.stripeId,
     });
     res.send({ success: true });
   }

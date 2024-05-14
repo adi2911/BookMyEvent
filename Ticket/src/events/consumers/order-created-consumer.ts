@@ -27,8 +27,11 @@ export class OrderCreatedConsumer extends Consumer<OrderCreatedEvent> {
 
     //send ticket update event //able to access this.client since base consumer has already got the client
     await new TicketUpdatedPublisher(this.client).publish({
-      ...ticket,
       id: ticket.id,
+      version: ticket.price,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId,
     });
 
     msg.ack();

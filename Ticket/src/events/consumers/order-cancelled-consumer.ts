@@ -24,8 +24,11 @@ export class OrderCancelledConsumer extends Consumer<OrderCancelledEvent> {
     await ticket.save();
 
     await new TicketUpdatedPublisher(this.client).publish({
-      ...ticket,
       id: ticket.id,
+      version: ticket.price,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId,
     });
     msg.ack();
   }
