@@ -17,6 +17,13 @@ export class TicketUpdatedConsumer extends Consumer<TicketUpdatedEvent> {
       id: data.id,
       version: data.version,
     });
+
+    console.log(
+      "Listening to TicketUpdated event:",
+      data,
+      "ticket received",
+      ticket
+    );
     if (!ticket) {
       throw new BadRequestError("Ticket not found");
     }
