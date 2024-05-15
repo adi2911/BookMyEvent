@@ -1,45 +1,46 @@
 import mongoose from "mongoose";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { OrderStatus } from "@adbookmyevent/common";
 import { TicketDoc } from "./ticket";
-import { updateIfCurrentPlugin } from "mongoose-update-if-current";
+export { OrderStatus };
 
 interface OrderAttribute {
+  userId: string;
   status: OrderStatus;
   expiresAt: Date;
-  userId: string;
   ticket: TicketDoc;
 }
 
 interface OrderDoc extends mongoose.Document {
+  userId: string;
   status: OrderStatus;
   expiresAt: Date;
-  userId: string;
   ticket: TicketDoc;
   version: number;
 }
 
 interface OrderModel extends mongoose.Model<OrderDoc> {
-  build(attribute: OrderAttribute): OrderDoc;
+  build(attrs: OrderAttribute): OrderDoc;
 }
 
 const orderSchema = new mongoose.Schema(
   {
+    userId: {
+      type: String,
+      required: true,
+    },
     status: {
       type: String,
       required: true,
       enum: Object.values(OrderStatus),
       default: OrderStatus.CREATED,
     },
-    userId: {
-      type: String,
-      required: true,
-    },
     expiresAt: {
       type: mongoose.Schema.Types.Date,
     },
     ticket: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
+      ref: "Ticket",
     },
   },
   {
@@ -52,12 +53,11 @@ const orderSchema = new mongoose.Schema(
   }
 );
 
-//Updating to look for version to solve concurrency issues
-orderSchema.set("versionKey", "version"); //By default its __v
+orderSchema.set("versionKey", "version");
 orderSchema.plugin(updateIfCurrentPlugin);
 
-orderSchema.statics.build = (attr: OrderAttribute) => {
-  return new Order(attr);
+orderSchema.statics.build = (attrs: OrderAttribute) => {
+  return new Order(attrs);
 };
 
 const Order = mongoose.model<OrderDoc, OrderModel>("Order", orderSchema);

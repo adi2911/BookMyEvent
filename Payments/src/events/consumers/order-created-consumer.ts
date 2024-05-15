@@ -9,7 +9,7 @@ import Order from "../../models/order";
 
 export const queueGroupName = "payments-service";
 
-export class OrderCreaterConsumer extends Consumer<OrderCreatedEvent> {
+export class OrderCreatedConsumer extends Consumer<OrderCreatedEvent> {
   subject: Subjects.OrderCreated = Subjects.OrderCreated;
   queueGroupName = queueGroupName;
 

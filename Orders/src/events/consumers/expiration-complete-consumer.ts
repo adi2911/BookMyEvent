@@ -38,5 +38,6 @@ export class ExpirationCompleteConsumer extends Consumer<ExpirationCompleteEvent
         price: order.ticket.price,
       },
     });
+    msg.ack();
   }
 }
