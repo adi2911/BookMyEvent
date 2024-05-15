@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import { OrderCreatedEvent, OrderStatus } from "@adbookmyevent/common";
 import { OrderCreatedConsumer } from "../order-created-consumer";
 import { natsWrapper } from "../../../nats-wrapper";
-import { Ticket } from "../../../models/ticket";
+import Ticket from "../../../models/ticket";
 
 const setup = async () => {
   // Create an instance of the listener

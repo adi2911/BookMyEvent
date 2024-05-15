@@ -33,6 +33,7 @@ export class OrderCreatedConsumer extends Consumer<OrderCreatedEvent> {
       title: ticket.title,
       price: ticket.price,
       userId: ticket.userId,
+      orderId: data.id,
     });
 
     msg.ack();

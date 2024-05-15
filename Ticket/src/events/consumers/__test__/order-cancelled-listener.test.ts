@@ -3,7 +3,7 @@ import { Message } from "node-nats-streaming";
 import { OrderCancelledEvent } from "@adbookmyevent/common";
 import { natsWrapper } from "../../../nats-wrapper";
 import { OrderCancelledConsumer } from "../order-cancelled-consumer";
-import { Ticket } from "../../../models/ticket";
+import Ticket from "../../../models/ticket";
 
 const setup = async () => {
   const listener = new OrderCancelledConsumer(natsWrapper.client);
@@ -22,6 +22,7 @@ const setup = async () => {
     version: 0,
     ticket: {
       id: ticket.id,
+      price: 10,
     },
   };
 
