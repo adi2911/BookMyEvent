@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { natsWrapper } from "./nats-wrapper";
 
 import { app } from "./app";
-import { OrderCreaterConsumer } from "./events/consumers/order-created-consumer";
+import { OrderCreatedConsumer } from "./events/consumers/order-created-consumer";
 import { OrderCancelledConsumer } from "./events/consumers/order-cancelled-consumer";
 
 const start = async () => {
@@ -36,7 +36,7 @@ const start = async () => {
     process.on("SIGINT", () => natsWrapper.client.close());
     process.on("SIGTERM", () => natsWrapper.client.close());
 
-    new OrderCreaterConsumer(natsWrapper.client).listen();
+    new OrderCreatedConsumer(natsWrapper.client).listen();
     new OrderCancelledConsumer(natsWrapper.client).listen();
 
     await mongoose.connect(process.env.MONGO_URI);

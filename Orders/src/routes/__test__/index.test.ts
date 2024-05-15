@@ -1,10 +1,11 @@
+import mongoose from "mongoose";
 import request from "supertest";
 import { app } from "../../app";
-import Order from "../../models/order";
 import Ticket from "../../models/ticket";
 
 const buildTicket = async () => {
   const ticket = Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: "concert",
     price: 20,
   });
@@ -46,10 +47,12 @@ it("fetches orders for an particular user", async () => {
     .set("Cookie", userTwo)
     .expect(200);
 
+  const orderOneR = response.body[0];
+  const orderTwoR = response.body[1];
   // Make sure we only got the orders for User #2
   expect(response.body.length).toEqual(2);
-  expect(response.body[0].id).toEqual(orderOne.id);
-  expect(response.body[1].id).toEqual(orderTwo.id);
-  expect(response.body[0].ticket).toEqual(ticketTwo.id);
-  expect(response.body[1].ticket).toEqual(ticketThree.id);
+  expect(orderOneR.id).toEqual(orderOne.id);
+  expect(orderTwoR.id).toEqual(orderTwo.id);
+  expect(orderOneR.ticket.id).toEqual(ticketTwo.id);
+  expect(orderTwoR.ticket.id).toEqual(ticketThree.id);
 });

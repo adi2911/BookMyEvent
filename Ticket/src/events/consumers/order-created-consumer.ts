@@ -16,6 +16,7 @@ export class OrderCreatedConsumer extends Consumer<OrderCreatedEvent> {
   async onMessage(data: OrderCreatedEvent["data"], msg: Message) {
     //find ticket
     const ticket = await Ticket.findById(data.ticket.id);
+    console.log("Listening to OrderCreatedConsumer", ticket);
     //if no ticket throw error
     if (!ticket) {
       throw new BadRequestError("Ticket not foung");
@@ -32,6 +33,7 @@ export class OrderCreatedConsumer extends Consumer<OrderCreatedEvent> {
       title: ticket.title,
       price: ticket.price,
       userId: ticket.userId,
+      orderId: data.id,
     });
 
     msg.ack();

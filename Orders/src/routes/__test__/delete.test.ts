@@ -1,13 +1,15 @@
+import mongoose from "mongoose";
 import request from "supertest";
 import { app } from "../../app";
 import Ticket from "../../models/ticket";
 import Order from "../../models/order";
-import { OrderStatus } from "@adbookmyevent/common";
 import { natsWrapper } from "../../nats-wrapper";
+import { OrderStatus } from "@adbookmyevent/common";
 
 it("marks an order as cancelled", async () => {
   // create a ticket with Ticket Model
   const ticket = Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: "concert",
     price: 20,
   });
@@ -20,6 +22,7 @@ it("marks an order as cancelled", async () => {
     .set("Cookie", user)
     .send({ ticketId: ticket.id })
     .expect(201);
+
   // make a request to cancel the order
   await request(app)
     .delete(`/api/orders/${order.id}`)
@@ -35,6 +38,7 @@ it("marks an order as cancelled", async () => {
 
 it("emits a order cancelled event", async () => {
   const ticket = Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: "concert",
     price: 20,
   });
